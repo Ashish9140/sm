@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+    <title>Smart Coordinator</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="btns">
+            <img src="images/logo2.png" alt="logo">
+            <p class="alias-code">Alias Code - px3z</p>
+            <!-- <button class="ss">Screenshot</button>
+            <button class="geo-snap">Geo Snapping</button> -->
+            <button class="alias-recording">Get Alias Recordings</button>
+        </div>
+        <div class="main-sec">
+            <div class="ss-sec">
+                <h3>Take Photo</h3>
+                <div>
+                    <video autoplay class="ssCtr"></video>
+                </div>
+                <div>
+                    <button class="take-ss">Start</button>
+                    <button class="ss-save" style="display: none;">Click</button>
+                </div>
+            </div>
+            <div class="audio-sec">
+                <h3>Record Audio</h3>
+                <div>
+                    <audio autoplay controls muted class="audioCtr"></audio>
+                </div>
+                <button class="audio-rec">Start</button>
+                <div class="audio-sec-btn">
+                    <span class="audio-duration duration">00:00</span>
+                    <button id="audiobtnPauseReco">Pause</button>
+                    <button id="audiobtnResumeReco" style="display: none ;">Resume</button>
+                    <button id="audiobtnStopReco">Stop</button>
+                </div>
+            </div>
+            <div class="videoWithoutAudio-sec">
+                <h3>Video Without Audio</h3>
+                <div class="inner-record">
+                    <video autoplay muted class="videoWithoutAudioCtr"></video>
+                </div>
+                <button class="video-rec-withoutAudio">Start</button>
+                <div class="videoWithoutAudio-sec-btn">
+                    <span class="videoWithout-duration duration">00:00</span>
+                    <button id="videobtnPauseReco">Pause</button>
+                    <button id="videobtnResumeReco" style="display: none ;">Resume</button>
+                    <button id="videobtnStopReco">Stop</button>
+                </div>
+            </div>
+            <div class="videoWithAudio-sec">
+                <h3>Video With Audio</h3>
+                <div>
+                    <video autoplay muted class="videoWithAudioCtr"></video>
+                </div>
+                <button class="video-rec-withAudio">Start</button>
+                <div class="videoWithAudio-sec-btn">
+                    <span class="videoWithAudio-duration duration">00:00</span>
+                    <button id="videoWithAudiobtnPauseReco">Pause</button>
+                    <button id="videoWithAudiobtnResumeReco" style="display: none ;">Resume</button>
+                    <button id="videoWithAudiobtnStopReco">Stop</button>
+                </div>
+            </div>
+            <div class="screenWithAudio-sec">
+                <h3>Screen With Audio</h3>
+                <div>
+                    <video autoplay muted class="screenWithAudioCtr"></video>
+                </div>
+                <button class="screen-rec-withAudio">Start</button>
+                <div class="screenWithAudio-sec-btn">
+                    <span class="screenWithAudio-duration duration">00:00</span>
+                    <button id="screenWithAudiobtnPauseReco">Pause</button>
+                    <button id="screenWithAudiobtnResumeReco" style="display: none ;">Resume</button>
+                    <button id="screenWithAudiobtnStopReco">Stop</button>
+                </div>
+            </div>
+            <div class="screenWithoutAudio-sec">
+                <h3>Screen Without Audio</h3>
+                <div>
+                    <video autoplay muted class="screenWithoutAudioCtr"></video>
+                </div>
+                <button class="screen-rec-withoutAudio">Start</button>
+                <div class="screenWithoutAudio-sec-btn">
+                    <span class="screenWithoutAudio-duration duration">00:00</span>
+                    <button id="screenWithoutAudiobtnPauseReco">Pause</button>
+                    <button id="screenWithoutAudiobtnResumeReco" style="display: none ;">Resume</button>
+                    <button id="screenWithoutAudiobtnStopReco">Stop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="data">
+        <div class="btns">
+            <button class="getBack" style="width: 100px;">Get back</button>
+        </div>
+        <!-- <div class="card">
+            <div class="cardInfo">
+                <p><span class="bold">aliascode : </span>xyz</p>
+                <p><span class="bold">filetype : </span>take photo</p>
+                <p><span class="bold">filepath : </span><a href="">ljdhfiukhdbhk</a></p>
+                <p><span class="bold">duration : </span>10 seconds</p>
+                <p><span class="bold">date : </span>10/09/2023</p>
+                <p><span class="bold">time : </span>10:23:04</p>
+                <p><span class="bold">latitude : </span>20.234435636</p>
+                <p><span class="bold">longitude : </span>65.454645</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardInfo">
+                <p><span class="bold">aliascode : </span>xyz</p>
+                <p><span class="bold">filetype : </span>take photo</p>
+                <p><span class="bold">filepath : </span><a href="">ljdhfiukhdbhk</a></p>
+                <p><span class="bold">duration : </span>10 seconds</p>
+                <p><span class="bold">date : </span>10/09/2023</p>
+                <p><span class="bold">time : </span>10:23:04</p>
+                <p><span class="bold">latitude : </span>20.234435636</p>
+                <p><span class="bold">longitude : </span>65.454645</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardInfo">
+                <p><span class="bold">aliascode : </span>xyz</p>
+                <p><span class="bold">filetype : </span>take photo</p>
+                <p><span class="bold">filepath : </span><a href="">ljdhfiukhdbhk</a></p>
+                <p><span class="bold">duration : </span>10 seconds</p>
+                <p><span class="bold">date : </span>10/09/2023</p>
+                <p><span class="bold">time : </span>10:23:04</p>
+                <p><span class="bold">latitude : </span>20.234435636</p>
+                <p><span class="bold">longitude : </span>65.454645</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardInfo">
+                <p><span class="bold">aliascode : </span>xyz</p>
+                <p><span class="bold">filetype : </span>take photo</p>
+                <p><span class="bold">filepath : </span><a href="" >ljdhfiukhdbhk</a></p>
+                <p><span class="bold">duration : </span>10 seconds</p>
+                <p><span class="bold">date : </span>10/09/2023</p>
+                <p><span class="bold">time : </span>10:23:04</p>
+                <p><span class="bold">latitude : </span>20.234435636</p>
+                <p><span class="bold">longitude : </span>65.454645</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardInfo">
+                <p><span class="bold">aliascode : </span>xyz</p>
+                <p><span class="bold">filetype : </span>take photo</p>
+                <p><span class="bold">filepath : </span><a href="">ljdhfiukhdbhk</a></p>
+                <p><span class="bold">duration : </span>10 seconds</p>
+                <p><span class="bold">date : </span>10/09/2023</p>
+                <p><span class="bold">time : </span>10:23:04</p>
+                <p><span class="bold">latitude : </span>20.234435636</p>
+                <p><span class="bold">longitude : </span>65.454645</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardInfo">
+                <p><span class="bold">aliascode : </span>xyz</p>
+                <p><span class="bold">filetype : </span>take photo</p>
+                <p><span class="bold">filepath : </span><a href="">ljdhfiukhdbhk</a></p>
+                <p><span class="bold">duration : </span>10 seconds</p>
+                <p><span class="bold">date : </span>10/09/2023</p>
+                <p><span class="bold">time : </span>10:23:04</p>
+                <p><span class="bold">latitude : </span>20.234435636</p>
+                <p><span class="bold">longitude : </span>65.454645</p>
+            </div>
+        </div> -->
+    </div>
+
+    <footer>
+        © 2022 THE GREEN BRIDGE Ingenieurgesellschaft mbH
+    </footer>
+
+    <script src="js/commonScript.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/takePhoto.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/videoWithout.js"></script>
+    <script src="js/videoWith.js"></script>
+    <script src="js/screenWithout.js"></script>
+    <script src="js/screenWith.js"></script>
+
+</body>
+
+</html>
