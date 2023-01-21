@@ -5,7 +5,7 @@ let dataCnt = document.querySelector(".data");
 getData.addEventListener('click', async () => {
     cnt.style.display = 'none';
     dataCnt.style.display = 'inline-block';
-    fetch('https://sm-q7uq.onrender.com/aliasdata', {
+    fetch(`${baseURL}/aliasdata`, {
         method: 'POST',
         headers: {
             "Content-type": "application/json; charset=UTF-8"
@@ -23,13 +23,15 @@ getData.addEventListener('click', async () => {
                     div.classList.add('card');
                     div.innerHTML = `<div class="cardInfo">
                 <p><span class="bold">aliascode : </span>${file.alias}</p>
+                <p><span class="bold">id : </span>${file._id}</p>
                 <p><span class="bold">filetype : </span>${file.filetype}</p>
-                <p><span class="bold">filepath : </span><a href="https://sm-q7uq.onrender.com/${file.filepath}" target="_blank">${file.filepath}</a></p>
+                <p><span class="bold">filepath : </span><a href="${baseURL}/${file.filepath}" target="_blank">${file.filepath}</a></p>
                 <p><span class="bold">duration : </span>${file.duration} seconds</p>
                 <p><span class="bold">date : </span>${file.date}</p>
                 <p><span class="bold">time : </span>${file.time}</p>
                 <p><span class="bold">latitude : </span>${file.latitude}</p>
                 <p><span class="bold">longitude : </span>${file.longitude}</p>
+                <p><span class="bold">altitude : </span>${file.altitude}</p>
                 </div>`;
                     dataCnt.appendChild(div);
                 }
@@ -38,12 +40,14 @@ getData.addEventListener('click', async () => {
                     div.classList.add('card');
                     div.innerHTML = `<div class="cardInfo">
                 <p><span class="bold">aliascode : </span>${file.alias}</p>
+                <p><span class="bold">ID : </span>${file._id}</p>
                 <p><span class="bold">filetype : </span>${file.filetype}</p>
-                <p><span class="bold">filepath : </span><a href="https://sm-q7uq.onrender.com/${file.filepath}" target="_blank">${file.filepath}</a></p>
+                <p><span class="bold">filepath : </span><a href="${baseURL}/${file.filepath}" target="_blank">${file.filepath}</a></p>
                 <p><span class="bold">date : </span>${file.date}</p>
                 <p><span class="bold">time : </span>${file.time}</p>
                 <p><span class="bold">latitude : </span>${file.latitude}</p>
                 <p><span class="bold">longitude : </span>${file.longitude}</p>
+                <p><span class="bold">altitude : </span>${file.altitude}</p>
                 </div>`;
                     dataCnt.appendChild(div);
                 }

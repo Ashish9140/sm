@@ -8,135 +8,166 @@
     let duration = 0;
     let interval;
 
-    async function screenReco() {
-        await navigator.mediaDevices.getDisplayMedia({
-            video: {
-                mediaSource: 'screen',
-            },
-            audio: true,
-        }).then(async (e) => {
+    function shareScreen() {
+        var screenConstraints = { video: true, audio: true };
+        navigator.mediaDevices.getDisplayMedia(screenConstraints).then(function (screenStream) {
+            /* use the screen & audio stream */
 
-            // For recording the mic audio
-            let audio = await navigator.mediaDevices.getUserMedia({
-                audio: true, video: false
-            })
+            var micConstraints = { audio: true };
+            navigator.mediaDevices.getUserMedia(micConstraints).then(function (micStream) {
+                /* use the microphone stream */
 
+                //create a new stream in which to pack everything together
+                var mediaStreamObj = new MediaStream();
 
-            // Combine both video/audio stream with MediaStream object
-            let mediaStreamObj = new MediaStream(
-                [...e.getTracks(), ...audio.getTracks()])
-
-            // buttons
-            let screenWithAudioPause = document.getElementById('screenWithAudiobtnPauseReco');
-            let screenWithAudioResume = document.getElementById('screenWithAudiobtnResumeReco');
-            let screenWithAudioStop = document.getElementById('screenWithAudiobtnStopReco');
-
-
-            let lat, long;
-            getPosition().then((pos) => {
-                lat = pos.coords.latitude;
-                long = pos.coords.longitude;
-            })
-
-            screenWithAudioResume.style.display = "none";
-            screenWithAudioPause.style.display = "inline-block";
-            screenWithAudioStop.style.display = "inline-block";
-
-            // Chunk array to store the audio data
-            let _recordedChunks = [];
-            screenWithAudio.srcObject = mediaStreamObj;
-            screenWithBtn.style.display = "none";
-            recordScreenWith.style.display = "flex";
-
-            // getting media tracks
-            let screenTrackWithAudio = e.getTracks();
-            let audioTracks = audio.getTracks();
-
-            runInterval();
-
-            // setup media recorder 
-            let mediaRecorder = new MediaRecorder(mediaStreamObj);
-
-            // Start event
-            mediaRecorder.start();
-            screenWithAudioPause.addEventListener('click', () => { mediaRecorder.pause(); });
-            screenWithAudioResume.addEventListener('click', () => { mediaRecorder.resume(); });
-            screenWithAudioStop.addEventListener('click', () => { mediaRecorder.stop(); });
-
-            // If audio data available then push
-            // it to the chunk array
-            mediaRecorder.ondataavailable = function (e) {
-                if (e.data.size > 0)
-                    _recordedChunks.push(e.data);
-            }
-            mediaRecorder.onpause = async () => {
-                screenWithAudioPause.style.display = "none";
-                screenWithAudioResume.style.display = "inline-block";
-                clearInterval(interval);
-            };
-            mediaRecorder.onresume = async () => {
-                screenWithAudioResume.style.display = "none";
-                screenWithAudioPause.style.display = "inline-block";
-                screenWithAudioStop.style.display = "inline-block";
-                runInterval();
-            };
-
-            // Convert the audio data in to blob
-            // after stopping the recording
-            mediaRecorder.onstop = async function (ev) {
-                screenTrackWithAudio.forEach((track) => {
-                    track.stop();
+                //add the screen video stream
+                screenStream.getVideoTracks().forEach(function (videoTrack) {
+                    mediaStreamObj.addTrack(videoTrack);
                 });
-                audioTracks.forEach((track) => {
-                    track.stop();
-                });
-                clearInterval(interval);
-                screenWithBtn.style.display = "inline-block";
-                recordScreenWith.style.display = "none";
-                var blob = new Blob(_recordedChunks, { type: 'video/mp4' });
-                let url = window.URL.createObjectURL(blob);
-                // take file input
-                let fileName = prompt("Enter file name", "my-screen");
 
-                // save file
-                let date = formatDate();
-                let time = formatTime();
+                //create new Audio Context
+                var context = new AudioContext();
 
-                if (lat === undefined) {
-                    let pos = await getPosition();
-                    lat = pos.coords.latitude;
-                    long = pos.coords.longitude;
+                //create new MediaStream destination. This is were our final stream will be.
+                var audioDestinationNode = context.createMediaStreamDestination();
+
+                //check to see if we have a screen stream and only then add it
+                if (screenStream && screenStream.getAudioTracks().length > 0) {
+                    //get the audio from the screen stream
+                    const systemSource = context.createMediaStreamSource(screenStream);
+
+                    //set it's volume (from 0.1 to 1.0)
+                    const systemGain = context.createGain();
+                    systemGain.gain.value = 1.0;
+
+                    //add it to the destination
+                    systemSource.connect(systemGain).connect(audioDestinationNode);
+
                 }
-                const formData = new FormData();
-                formData.append("screenwith", blob);
-                formData.append("filename", fileName);
-                formData.append("date", date);
-                formData.append("time", time);
-                formData.append("latitude", lat);
-                formData.append("longitude", long);
-                formData.append("duration", duration);
-                formData.append("alias", aliasCodeName);
 
-                fetch('https://sm-q7uq.onrender.com/screenwith', {
-                    method: 'POST',
-                    body: formData
-                }).then((response) => response.json())
-                    .then((data) => console.log(data));
+                //check to see if we have a microphone stream and only then add it
+                if (micStream && micStream.getAudioTracks().length > 0) {
+                    //get the audio from the microphone stream
+                    const micSource = context.createMediaStreamSource(micStream);
 
-                screenWithAudio.srcObject = null;
-            }
-        })
-            // If any error occurs then handles the error
-            .catch(function (err) {
-                console.log(err.name, err.message);
+                    //set it's volume
+                    const micGain = context.createGain();
+                    micGain.gain.value = 1.0;
 
-            });
+                    //add it to the destination
+                    micSource.connect(micGain).connect(audioDestinationNode);
+                }
+
+                //add the combined audio stream
+                audioDestinationNode.stream.getAudioTracks().forEach(function (audioTrack) {
+                    mediaStreamObj.addTrack(audioTrack);
+                });
+
+                // getting media tracks
+                let screenTrackWithAudio = screenStream.getTracks();
+                let audioTracks = micStream.getTracks();
+
+                {
+                    // buttons
+                    let screenWithAudioPause = document.getElementById('screenWithAudiobtnPauseReco');
+                    let screenWithAudioResume = document.getElementById('screenWithAudiobtnResumeReco');
+                    let screenWithAudioStop = document.getElementById('screenWithAudiobtnStopReco');
+
+                    screenWithAudioResume.style.display = "none";
+                    screenWithAudioPause.style.display = "inline-block";
+                    screenWithAudioStop.style.display = "inline-block";
+
+                    // Chunk array to store the audio data
+                    let _recordedChunks = [];
+                    screenWithAudio.srcObject = mediaStreamObj;
+                    screenWithBtn.style.display = "none";
+                    recordScreenWith.style.display = "flex";
+
+                    runInterval();
+
+                    // setup media recorder 
+                    let mediaRecorder = new MediaRecorder(mediaStreamObj);
+
+                    // Start event
+                    mediaRecorder.start();
+                    screenWithAudioPause.addEventListener('click', () => { mediaRecorder.pause(); });
+                    screenWithAudioResume.addEventListener('click', () => { mediaRecorder.resume(); });
+                    screenWithAudioStop.addEventListener('click', () => { mediaRecorder.stop(); });
+
+                    // If audio data available then push
+                    // it to the chunk array
+                    mediaRecorder.ondataavailable = function (e) {
+                        if (e.data.size > 0)
+                            _recordedChunks.push(e.data);
+                    }
+                    mediaRecorder.onpause = async () => {
+                        screenWithAudioPause.style.display = "none";
+                        screenWithAudioResume.style.display = "inline-block";
+                        clearInterval(interval);
+                    };
+                    mediaRecorder.onresume = async () => {
+                        screenWithAudioResume.style.display = "none";
+                        screenWithAudioPause.style.display = "inline-block";
+                        screenWithAudioStop.style.display = "inline-block";
+                        runInterval();
+                    };
+
+                    // Convert the audio data in to blob
+                    // after stopping the recording
+                    mediaRecorder.onstop = async function (ev) {
+                        screenTrackWithAudio.forEach((track) => {
+                            track.stop();
+                        });
+                        audioTracks.forEach((track) => {
+                            track.stop();
+                        });
+                        clearInterval(interval);
+                        screenWithBtn.style.display = "inline-block";
+                        recordScreenWith.style.display = "none";
+                        var blob = new Blob(_recordedChunks, { type: 'video/mp4' });
+                        let url = window.URL.createObjectURL(blob);
+                        // take file input
+                        let fileName = prompt("Enter file name", "my-screen");
+
+                        // save file
+                        let date = formatDate();
+                        let time = formatTime();
+
+                        const formData = new FormData();
+                        formData.append("screenwith", blob);
+                        formData.append("filename", fileName);
+                        formData.append("date", date);
+                        formData.append("time", time);
+                        formData.append("latitude", lat);
+                        formData.append("longitude", long);
+                        formData.append("duration", duration);
+                        formData.append("altitude", alt);
+                        formData.append("alias", aliasCodeName);
+
+                        fetch(`${baseURL}/screenwith`, {
+                            method: 'POST',
+                            body: formData
+                        }).then((response) => response.json())
+                            .then((data) => console.log(data));
+
+                        screenWithAudio.srcObject = null;
+                    }
+                }
+
+            })
+                .catch(function (err) {
+                    console.log(err);
+                });
+
+        }).catch(function (err) {
+            console.log(err);
+        });
     }
 
     document.querySelector(".screen-rec-withAudio").addEventListener("click", () => {
         durationBtn.innerHTML = '00:00';
         duration = 0;
-        screenReco();
+        shareScreen();
     })
 
     function runInterval() {

@@ -19,14 +19,6 @@
                 videoPause.style.display = "inline-block";
                 videoStop.style.display = "inline-block";
 
-
-                let lat, long;
-                getPosition().then((pos) => {
-                    lat = pos.coords.latitude;
-                    long = pos.coords.longitude;
-                })
-
-
                 // getting media tracks
                 let videoTrackWithoutAudio = mediaStreamObj.getTracks();
                 // Chunk array to store the audio data
@@ -81,12 +73,6 @@
                     let date = formatDate();
                     let time = formatTime();
 
-                    if (lat === undefined) {
-                        let pos = await getPosition();
-                        lat = pos.coords.latitude;
-                        long = pos.coords.longitude;
-                    }
-
                     const formData = new FormData();
                     formData.append("videowithout", blob);
                     formData.append("filename", fileName);
@@ -94,10 +80,11 @@
                     formData.append("time", time);
                     formData.append("latitude", lat);
                     formData.append("longitude", long);
+                    formData.append("altitude", alt);
                     formData.append("duration", duration);
                     formData.append("alias", aliasCodeName);
 
-                    fetch('https://sm-q7uq.onrender.com/videowithout', {
+                    fetch(`${baseURL}/videowithout`, {
                         method: 'POST',
                         body: formData
                     }).then((response) => response.json())

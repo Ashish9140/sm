@@ -11,6 +11,7 @@ const fileSchema = new Schema({
     time: { type: String, required: true },
     latitude: { type: String, required: true },
     longitude: { type: String, required: true },
+    altitude: { type: String },
     duration: { type: String },
 });
 

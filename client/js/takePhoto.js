@@ -13,12 +13,6 @@
 
             let ssTracks = stream.getTracks();
 
-            let lat, long;
-            getPosition().then((pos) => {
-                lat = pos.coords.latitude;
-                long = pos.coords.longitude;
-            })
-
             // set video source
             video.srcObject = stream;
             takePhoto.style.display = "none";
@@ -45,19 +39,13 @@
                 let date = formatDate();
                 let time = formatTime();
 
-                if (lat === undefined) {
-                    let pos = await getPosition();
-                    lat = pos.coords.latitude;
-                    long = pos.coords.longitude;
-                }
-
-                fetch('https://sm-q7uq.onrender.com/take-photo', {
+                fetch(`${baseURL}/take-photo`, {
                     method: 'POST',
                     headers: {
                         "Content-type": "application/json; charset=UTF-8"
                     },
                     body: JSON.stringify({
-                        img, filename: fileName, date, time, latitude: lat, longitude: long, alias: aliasCodeName
+                        img, filename: fileName, date, time, latitude: lat, longitude: long, altitude: alt, alias: aliasCodeName
                     })
                 }).then((response) => response.json())
                     .then((data) => console.log(data));

@@ -1,7 +1,11 @@
-var aliasCodeName = "xyz"
+var aliasCodeName = "xyz";
+var baseURL = "https://sm-q7uq.onrender.com";
+var lat;
+var long;
+var alt;
 
 function aliasCode() {
-    aliasCodeName = prompt("Enter Alias Code", "xyz");
+    aliasCodeName = prompt("Enter Alias Code", "abc");
     document.querySelector(".container").style.display = "flex";
     document.querySelector(".alias-code").innerHTML = `Alias Code - ${aliasCodeName}`;
 }
@@ -28,3 +32,13 @@ function getPosition() {
         navigator.geolocation.getCurrentPosition(res, rej);
     });
 }
+
+getPosition().then((pos) => {
+    lat = pos.coords.latitude;
+    long = pos.coords.longitude;
+    fetch(`https://api.open-elevation.com/api/v1/lookup?locations=${lat}, ${long}`).then((response) => response.json())
+        .then((data) => {
+            alt = data.results[0].elevation;
+            console.log(lat, long, alt);
+        });
+})

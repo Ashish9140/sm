@@ -16,14 +16,6 @@
                 let videoWithAudioResume = document.getElementById('videoWithAudiobtnResumeReco');
                 let videoWithAudioStop = document.getElementById('videoWithAudiobtnStopReco');
 
-
-                let lat, long;
-                getPosition().then((pos) => {
-                    lat = pos.coords.latitude;
-                    long = pos.coords.longitude;
-                })
-
-
                 // getting media tracks
                 let videoTrackWithAudio = mediaStreamObj.getTracks();
                 // Chunk array to store the audio data
@@ -78,12 +70,6 @@
                     let date = formatDate();
                     let time = formatTime();
 
-                    if (lat === undefined) {
-                        let pos = await getPosition();
-                        lat = pos.coords.latitude;
-                        long = pos.coords.longitude;
-                    }
-
                     const formData = new FormData();
                     formData.append("videowith", blob);
                     formData.append("filename", fileName);
@@ -92,9 +78,10 @@
                     formData.append("latitude", lat);
                     formData.append("longitude", long);
                     formData.append("duration", duration);
+                    formData.append("altitude", alt);
                     formData.append("alias", aliasCodeName);
 
-                    fetch('https://sm-q7uq.onrender.com/videowith', {
+                    fetch(`${baseURL}/videowith`, {
                         method: 'POST',
                         body: formData
                     }).then((response) => response.json())

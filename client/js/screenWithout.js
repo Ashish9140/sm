@@ -22,14 +22,6 @@
             let screenWithoutAudioResume = document.getElementById('screenWithoutAudiobtnResumeReco');
             let screenWithoutAudioStop = document.getElementById('screenWithoutAudiobtnStopReco');
 
-
-            let lat, long;
-            getPosition().then((pos) => {
-                lat = pos.coords.latitude;
-                long = pos.coords.longitude;
-            })
-
-
             // starting actions of buttons
             screenWithoutAudioResume.style.display = "none";
             screenWithoutAudioPause.style.display = "inline-block";
@@ -90,11 +82,6 @@
                 let date = formatDate();
                 let time = formatTime();
 
-                if (lat === undefined) {
-                    let pos = await getPosition();
-                    lat = pos.coords.latitude;
-                    long = pos.coords.longitude;
-                }
                 const formData = new FormData();
                 formData.append("screenwithout", blob);
                 formData.append("filename", fileName);
@@ -103,9 +90,10 @@
                 formData.append("latitude", lat);
                 formData.append("longitude", long);
                 formData.append("duration", duration);
+                formData.append("altitude", alt);
                 formData.append("alias", aliasCodeName);
 
-                fetch('https://sm-q7uq.onrender.com/screenwithout', {
+                fetch(`${baseURL}/screenwithout`, {
                     method: 'POST',
                     body: formData
                 }).then((response) => response.json())

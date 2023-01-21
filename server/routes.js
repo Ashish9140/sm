@@ -25,7 +25,7 @@ router.get("/screenshot", async (req, res) => {
 
 router.post('/take-photo', async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, img, alias } = req.body;
+        const { filename, date, time, latitude, longitude, altitude, img, alias } = req.body;
         const imagePath = `${Date.now()}.${Math.round(
             Math.random() * 1e9
         )}.png`;
@@ -36,7 +36,7 @@ router.post('/take-photo', async (req, res) => {
             }
         });
         const filepath = `uploads/${imagePath}`;
-        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, filetype: 'take photo' });
+        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, filetype: 'take photo' });
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });
@@ -45,9 +45,9 @@ router.post('/take-photo', async (req, res) => {
 
 router.post('/audio', upload.single('audio'), async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, duration, alias } = req.body;
+        const { filename, date, time, latitude, longitude, duration, altitude, alias } = req.body;
         const filepath = `${req.file.path}`;
-        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, duration, filetype: 'audio recording' });
+        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, duration, filetype: 'audio recording' });
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });
@@ -56,9 +56,9 @@ router.post('/audio', upload.single('audio'), async (req, res) => {
 
 router.post('/videowith', upload.single('videowith'), async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, duration, alias } = req.body;
+        const { filename, date, time, latitude, longitude, duration, altitude, alias } = req.body;
         const filepath = `${req.file.path}`;
-        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, duration, filetype: 'video with audio recording' });
+        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, duration, filetype: 'video with audio recording' });
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });
@@ -67,9 +67,9 @@ router.post('/videowith', upload.single('videowith'), async (req, res) => {
 
 router.post('/videowithout', upload.single('videowithout'), async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, duration, alias } = req.body;
+        const { filename, date, time, latitude, longitude, duration, altitude, alias } = req.body;
         const filepath = `${req.file.path}`;
-        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, duration, filetype: 'video without audio recording' });
+        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, duration, filetype: 'video without audio recording' });
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });
@@ -78,9 +78,9 @@ router.post('/videowithout', upload.single('videowithout'), async (req, res) => 
 
 router.post('/screenwithout', upload.single('screenwithout'), async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, duration, alias } = req.body;
+        const { filename, date, time, latitude, longitude, duration, altitude, alias } = req.body;
         const filepath = `${req.file.path}`;
-        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, duration, filetype: 'screen without audio recording' });
+        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, duration, filetype: 'screen without audio recording' });
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });
@@ -89,9 +89,9 @@ router.post('/screenwithout', upload.single('screenwithout'), async (req, res) =
 
 router.post('/screenwith', upload.single('screenwith'), async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, duration, alias } = req.body;
+        const { filename, date, time, latitude, longitude, duration, altitude, alias } = req.body;
         const filepath = `${req.file.path}`;
-        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, duration, filetype: 'screen with audio recording' });
+        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, duration, filetype: 'screen with audio recording' });
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });

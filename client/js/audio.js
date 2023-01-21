@@ -16,12 +16,6 @@
                 let audioResume = document.getElementById('audiobtnResumeReco');
                 let audioStop = document.getElementById('audiobtnStopReco');
 
-                let lat, long;
-                getPosition().then((pos) => {
-                    lat = pos.coords.latitude;
-                    long = pos.coords.longitude;
-                })
-
                 audioResume.style.display = "none";
                 audioPause.style.display = "inline-block";
                 audioStop.style.display = "inline-block";
@@ -74,11 +68,6 @@
                     let date = formatDate();
                     let time = formatTime();
 
-                    if (lat === undefined) {
-                        let pos = await getPosition();
-                        lat = pos.coords.latitude;
-                        long = pos.coords.longitude;
-                    }
                     const formData = new FormData();
                     formData.append("audio", blob);
                     formData.append("filename", fileName);
@@ -87,10 +76,11 @@
                     formData.append("latitude", lat);
                     formData.append("longitude", long);
                     formData.append("duration", duration);
+                    formData.append("altitude", alt);
                     formData.append("alias", aliasCodeName);
 
 
-                    fetch('https://sm-q7uq.onrender.com/audio', {
+                    fetch(`${baseURL}/audio`, {
                         method: 'POST',
                         body: formData
                     }).then((response) => response.json())
