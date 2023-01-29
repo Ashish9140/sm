@@ -43,6 +43,26 @@ router.post('/take-photo', async (req, res) => {
     }
 })
 
+router.post('/take-snap', async (req, res) => {
+    try {
+        const { filename, date, time, latitude, longitude, altitude, img, alias } = req.body;
+        const imagePath = `${Date.now()}.${Math.round(
+            Math.random() * 1e9
+        )}.png`;
+        const buffer = Buffer.from(img.replace(/^data:image\/(png|jpg|jpeg);base64,/, ''), 'base64');
+        fs.writeFile(`uploads/${imagePath}`, buffer, function (err) {
+            if (!err) {
+                console.log("file is created")
+            }
+        });
+        const filepath = `uploads/${imagePath}`;
+        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, filetype: 'take snap' });
+        res.send({ message: "File Saved", file });
+    } catch (err) {
+        res.send({ message: "Internal Server Error" });
+    }
+})
+
 router.post('/audio', upload.single('audio'), async (req, res) => {
     try {
         const { filename, date, time, latitude, longitude, duration, altitude, alias } = req.body;
@@ -92,6 +112,16 @@ router.post('/screenwith', upload.single('screenwith'), async (req, res) => {
         const { filename, date, time, latitude, longitude, duration, altitude, alias } = req.body;
         const filepath = `${req.file.path}`;
         let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, duration, filetype: 'screen with audio recording' });
+        res.send({ message: "File Saved", file });
+    } catch (err) {
+        res.send({ message: "Internal Server Error" });
+    }
+});
+
+router.post('/geo-snap', async (req, res) => {
+    try {
+        const { filename, date, time, latitude, longitude, altitude, alias } = req.body;
+        let file = await fileModal.create({ alias, filename, date, time, latitude, longitude, altitude, filetype: 'geo-snap' });
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });

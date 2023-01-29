@@ -16,11 +16,21 @@
         <div class="btns">
             <img src="images/logo2.png" alt="logo">
             <p class="alias-code">Alias Code - px3z</p>
-            <!-- <button class="ss">Screenshot</button>
-            <button class="geo-snap">Geo Snapping</button> -->
+            <button class="screenshot">Take Screenshot</button>
+            <button class="geo-snap">Geo Snapping</button>
             <button class="alias-recording">Get Alias Recordings</button>
         </div>
         <div class="main-sec">
+            <div class="snap-sec">
+                <h3>Take Snap</h3>
+                <div>
+                    <video autoplay class="snapCtr"></video>
+                </div>
+                <div>
+                    <button class="take-snap">Start</button>
+                    <button class="ss-save" style="display: none;">Click</button>
+                </div>
+            </div>
             <div class="ss-sec">
                 <h3>Take Photo</h3>
                 <div>
@@ -103,6 +113,7 @@
         <div class="btns">
             <button class="getBack" style="width: 100px;">Get back</button>
         </div>
+        <div class="cards"></div>
     </div>
 
     <footer>
@@ -111,6 +122,8 @@
 
     <script src="js/commonScript.js"></script>
     <script src="js/data.js"></script>
+    <script src="js/geoSnappig.js"></script>
+    <script src="js/screenshot.js"></script>
     <script src="js/takePhoto.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/videoWithout.js"></script>

@@ -1,6 +1,7 @@
 let getData = document.querySelector('.alias-recording');
 let cnt = document.querySelector(".container");
 let dataCnt = document.querySelector(".data");
+let cardCnt = document.querySelector(".cards");
 
 getData.addEventListener('click', async () => {
     cnt.style.display = 'none';
@@ -17,13 +18,14 @@ getData.addEventListener('click', async () => {
         .then((data) => {
             let files = data.file;
             // console.log(files);
+            cardCnt.innerHTML = '';
             files.forEach(file => {
-                if (file.filetype !== 'take photo') {
+                if (file.filetype !== 'take photo' && file.filetype !== 'geo-snap' && file.filetype !== 'take snap') {
                     let div = document.createElement('div');
                     div.classList.add('card');
                     div.innerHTML = `<div class="cardInfo">
                 <p><span class="bold">aliascode : </span>${file.alias}</p>
-                <p><span class="bold">id : </span>${file._id}</p>
+                <p><span class="bold">filename : </span>${file.filename}</p>
                 <p><span class="bold">filetype : </span>${file.filetype}</p>
                 <p><span class="bold">filepath : </span><a href="${baseURL}/${file.filepath}" target="_blank">${file.filepath}</a></p>
                 <p><span class="bold">duration : </span>${file.duration} seconds</p>
@@ -31,25 +33,37 @@ getData.addEventListener('click', async () => {
                 <p><span class="bold">time : </span>${file.time}</p>
                 <p><span class="bold">latitude : </span>${file.latitude}</p>
                 <p><span class="bold">longitude : </span>${file.longitude}</p>
-                <p><span class="bold">altitude : </span>${file.altitude}</p>
                 </div>`;
-                    dataCnt.appendChild(div);
+                    cardCnt.appendChild(div);
+                }
+                else if (file.filetype === 'geo-snap') {
+                    let div = document.createElement('div');
+                    div.classList.add('card');
+                    div.innerHTML = `<div class="cardInfo">
+                <p><span class="bold">aliascode : </span>${file.alias}</p>
+                <p><span class="bold">filename : </span>${file.filename}</p>
+                <p><span class="bold">filetype : </span>${file.filetype}</p>
+                <p><span class="bold">date : </span>${file.date}</p>
+                <p><span class="bold">time : </span>${file.time}</p>
+                <p><span class="bold">latitude : </span>${file.latitude}</p>
+                <p><span class="bold">longitude : </span>${file.longitude}</p>
+                </div>`;
+                    cardCnt.appendChild(div);
                 }
                 else {
                     let div = document.createElement('div');
                     div.classList.add('card');
                     div.innerHTML = `<div class="cardInfo">
                 <p><span class="bold">aliascode : </span>${file.alias}</p>
-                <p><span class="bold">ID : </span>${file._id}</p>
+                <p><span class="bold">filename : </span>${file.filename}</p>
                 <p><span class="bold">filetype : </span>${file.filetype}</p>
                 <p><span class="bold">filepath : </span><a href="${baseURL}/${file.filepath}" target="_blank">${file.filepath}</a></p>
                 <p><span class="bold">date : </span>${file.date}</p>
                 <p><span class="bold">time : </span>${file.time}</p>
                 <p><span class="bold">latitude : </span>${file.latitude}</p>
                 <p><span class="bold">longitude : </span>${file.longitude}</p>
-                <p><span class="bold">altitude : </span>${file.altitude}</p>
                 </div>`;
-                    dataCnt.appendChild(div);
+                    cardCnt.appendChild(div);
                 }
             });
         });

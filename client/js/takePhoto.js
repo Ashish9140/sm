@@ -30,9 +30,6 @@
                 canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
                 // Take a shot
                 let img = canvas.toDataURL('image/jpeg');
-                // save image file
-                let anchorTag = document.createElement('a');
-                anchorTag.href = img;
                 // take the file name
                 let fileName = prompt("Enter file name", "my-image");
 
