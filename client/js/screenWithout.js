@@ -13,8 +13,7 @@
         await navigator.mediaDevices.getDisplayMedia({
             video: {
                 mediaSource: 'screen',
-            },
-            audio: true,
+            }
         }).then(async (mediaStreamObj) => {
 
             // buttons

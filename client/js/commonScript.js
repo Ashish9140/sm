@@ -36,11 +36,7 @@ function getPosition() {
 getPosition().then((pos) => {
     lat = pos.coords.latitude;
     long = pos.coords.longitude;
-    // fetch(`https://api.open-elevation.com/api/v1/lookup?locations=${lat}, ${long}`).then((response) => response.json())
-    //     .then((data) => {
-    //         alt = data.results[0].elevation;
-    console.log(lat, long, alt);
-    // });
+    console.log(lat, long);
 })
 
 // const main = async () => {
@@ -53,3 +49,8 @@ getPosition().then((pos) => {
 // for (let i = 0; i < 10; i++) {
 //     main();
 // }
+
+
+// fetch(`https://api.open-elevation.com/api/v1/lookup?locations=${lat}, ${long}`).then((response) => response.json())
+//     .then((data) => {
+//         alt = data.results[0].elevation;
