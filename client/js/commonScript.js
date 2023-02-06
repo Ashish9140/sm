@@ -5,7 +5,7 @@ var long;
 var alt = 22;
 
 function aliasCode() {
-    aliasCodeName = prompt("Enter Alias Code", "abc");
+    aliasCodeName = prompt("Enter Alias Code", "pxz");
     document.querySelector(".container").style.display = "flex";
     document.querySelector(".alias-code").innerHTML = `Alias Code - ${aliasCodeName}`;
 }
