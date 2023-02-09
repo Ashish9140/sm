@@ -45,7 +45,7 @@ getData.addEventListener('click', async () => {
                 <p><span class="bold">time_zone : </span>{ date: ${file.date}, time : ${file.time} }</p>
                 <p><span class="bold">location : </span>{ lat : ${file.latitude}, long : ${file.longitude} }</p>
                 <p><span class="bold">ip : </span>{ address : ${file.user.ip}, type : ${file.user.iptype} }</p>
-                <p><span class="bold">os : </span>{ address : ${file.user.os.name}, type : ${file.user.os.type} }</p>
+                <p><span class="bold">os : </span>{ name : ${file.user.os.name}, type : ${file.user.os.type} }</p>
                 <p><span class="bold">search : </span>{ browser : ${file.user.name}, type : ${file.user.type} }</p>
                 <p><span class="bold">device : </span>{ brand : ${file.user.device.brand}, name : ${file.user.os.name}, type : ${file.user.os.type} }</p>
                 </div>`;
