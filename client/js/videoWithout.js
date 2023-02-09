@@ -80,9 +80,19 @@
                     formData.append("time", time);
                     formData.append("latitude", lat);
                     formData.append("longitude", long);
-                    formData.append("altitude", alt);
                     formData.append("duration", duration);
                     formData.append("alias", aliasCodeName);
+
+                    formData.append("ip", user.ip);
+                    formData.append("iptype", user.iptype);
+                    formData.append("devicebrand", user.device.brand);
+                    formData.append("devicename", user.device.name);
+                    formData.append("devicetype", user.device.type);
+                    formData.append("searchname", user.name);
+                    formData.append("searchtype", user.type);
+                    formData.append("searchversion", user.version);
+                    formData.append("osname", user.os.name);
+                    formData.append("ostype", user.os.type);
 
                     fetch(`${baseURL}/videowithout`, {
                         method: 'POST',

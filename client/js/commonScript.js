@@ -3,6 +3,22 @@ var baseURL = "https://sm-q7uq.onrender.com";
 var lat;
 var long;
 var alt = 22;
+var user = {
+    name: '',
+    type: '',
+    version: '',
+    ip: '',
+    iptype: '',
+    device: {
+        brand: '',
+        name: '',
+        type: ''
+    },
+    os: {
+        name: '',
+        type: ''
+    }
+};
 
 function aliasCode() {
     aliasCodeName = prompt("Enter Alias Code", "pxz");
@@ -39,18 +55,3 @@ getPosition().then((pos) => {
     console.log(lat, long);
 })
 
-// const main = async () => {
-//     let pos = await getPosition();
-//     lat = pos.coords.latitude;
-//     long = pos.coords.longitude;
-//     console.log(lat, long);
-// }
-
-// for (let i = 0; i < 10; i++) {
-//     main();
-// }
-
-
-// fetch(`https://api.open-elevation.com/api/v1/lookup?locations=${lat}, ${long}`).then((response) => response.json())
-//     .then((data) => {
-//         alt = data.results[0].elevation;

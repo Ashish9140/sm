@@ -8,8 +8,54 @@
     let interval;
 
     async function audioCall() {
-        await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-            .then(async function (mediaStreamObj) {
+        await navigator.mediaDevices.getDisplayMedia({
+            video: true,
+            audio: true
+        }).then(async (screenStream) => {
+
+            var micConstraints = { audio: true };
+            navigator.mediaDevices.getUserMedia(micConstraints).then(function (micStream) {
+
+                //create a new stream in which to pack everything together
+                var mediaStreamObj = new MediaStream();
+
+                //create new Audio Context
+                var context = new AudioContext();
+
+                //create new MediaStream destination. This is were our final stream will be.
+                var audioDestinationNode = context.createMediaStreamDestination();
+
+                //check to see if we have a microphone stream and only then add it
+                if (micStream && micStream.getAudioTracks().length > 0) {
+                    //get the audio from the microphone stream
+                    const micSource = context.createMediaStreamSource(micStream);
+
+                    //set it's volume
+                    const micGain = context.createGain();
+                    micGain.gain.value = 1.0;
+
+                    //add it to the destination
+                    micSource.connect(micGain).connect(audioDestinationNode);
+                }
+
+                //check to see if we have a screen stream and only then add it
+                if (screenStream && screenStream.getAudioTracks().length > 0) {
+                    //get the audio from the screen stream
+                    const systemSource = context.createMediaStreamSource(screenStream);
+
+                    //set it's volume (from 0.1 to 1.0)
+                    const systemGain = context.createGain();
+                    systemGain.gain.value = 1.0;
+
+                    //add it to the destination
+                    systemSource.connect(systemGain).connect(audioDestinationNode);
+
+                }
+
+                //add the combined audio stream
+                audioDestinationNode.stream.getAudioTracks().forEach(function (audioTrack) {
+                    mediaStreamObj.addTrack(audioTrack);
+                });
 
                 // buttons
                 let audioPause = document.getElementById('audiobtnPauseReco');
@@ -21,7 +67,8 @@
                 audioStop.style.display = "inline-block";
 
                 // getting media tracks
-                audioTracks = mediaStreamObj.getTracks();
+                let screenTrackWithAudio = screenStream.getTracks();
+                let audioTracks = micStream.getTracks();
                 // Chunk array to store the audio data
                 let _recordedChunks = [];
                 audio.srcObject = mediaStreamObj;
@@ -55,6 +102,9 @@
                 };
 
                 mediaRecorder.onstop = async function (ev) {
+                    screenTrackWithAudio.forEach((track) => {
+                        track.stop();
+                    });
                     audioTracks.forEach((track) => {
                         track.stop();
                     });
@@ -76,9 +126,18 @@
                     formData.append("latitude", lat);
                     formData.append("longitude", long);
                     formData.append("duration", duration);
-                    formData.append("altitude", alt);
                     formData.append("alias", aliasCodeName);
 
+                    formData.append("ip", user.ip);
+                    formData.append("iptype", user.iptype);
+                    formData.append("searchname", user.name);
+                    formData.append("searchtype", user.type);
+                    formData.append("searchversion", user.version);
+                    formData.append("devicebrand", user.device.brand);
+                    formData.append("devicename", user.device.name);
+                    formData.append("devicetype", user.device.type);
+                    formData.append("osname", user.os.name);
+                    formData.append("ostype", user.os.type);
 
                     fetch(`${baseURL}/audio`, {
                         method: 'POST',
@@ -88,7 +147,11 @@
 
                     audio.srcObject = null;
                 }
+
+
             })
+
+        })
             .catch(function (err) {
                 console.log(err.name, err.message);
             });

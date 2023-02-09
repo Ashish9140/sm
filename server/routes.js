@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const screenshot = require('desktop-screenshot');
 const multer = require('multer');
 const fs = require('fs');
 const fileModal = require('./fileModal');
@@ -14,18 +13,9 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router.get("/screenshot", async (req, res) => {
-    screenshot("uploads/screenshot.png", function (error, complete) {
-        if (error)
-            res.send({ message: "Screenshot failed" });
-        else
-            res.send({ message: "Screenshot succeeded" });
-    });
-})
-
 router.post('/take-photo', async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, altitude, img, alias } = req.body;
+        const { filename, date, time, latitude, longitude, img, alias, ip, iptype, devicebrand, devicename, devicetype, searchname, searchtype, searchversion, ostype, osname } = req.body;
         const imagePath = `${Date.now()}.${Math.round(
             Math.random() * 1e9
         )}.png`;
@@ -36,7 +26,33 @@ router.post('/take-photo', async (req, res) => {
             }
         });
         const filepath = `uploads/${imagePath}`;
-        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, filetype: 'take photo' });
+        const data = {
+            alias: alias,
+            filename: filename,
+            filepath: filepath,
+            filetype: 'take photo',
+            date: date,
+            time: time,
+            latitude: latitude,
+            longitude: longitude,
+            user: {
+                ip: ip,
+                iptype: iptype,
+                name: searchname,
+                type: searchtype,
+                version: searchversion,
+                os: {
+                    name: osname,
+                    type: ostype
+                },
+                device: {
+                    brand: devicebrand,
+                    name: devicename,
+                    type: devicetype
+                }
+            }
+        }
+        let file = await fileModal.create(data);
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });
@@ -45,7 +61,7 @@ router.post('/take-photo', async (req, res) => {
 
 router.post('/take-snap', async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, altitude, img, alias } = req.body;
+        const { filename, date, time, latitude, longitude, img, alias, ip, iptype, devicebrand, devicename, devicetype, searchname, searchtype, searchversion, ostype, osname } = req.body;
         const imagePath = `${Date.now()}.${Math.round(
             Math.random() * 1e9
         )}.png`;
@@ -56,7 +72,33 @@ router.post('/take-snap', async (req, res) => {
             }
         });
         const filepath = `uploads/${imagePath}`;
-        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, filetype: 'take snap' });
+        const data = {
+            alias: alias,
+            filename: filename,
+            filepath: filepath,
+            filetype: 'take snap',
+            date: date,
+            time: time,
+            latitude: latitude,
+            longitude: longitude,
+            user: {
+                ip: ip,
+                iptype: iptype,
+                name: searchname,
+                type: searchtype,
+                version: searchversion,
+                os: {
+                    name: osname,
+                    type: ostype
+                },
+                device: {
+                    brand: devicebrand,
+                    name: devicename,
+                    type: devicetype
+                }
+            }
+        }
+        let file = await fileModal.create(data);
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });
@@ -65,9 +107,37 @@ router.post('/take-snap', async (req, res) => {
 
 router.post('/audio', upload.single('audio'), async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, duration, altitude, alias } = req.body;
+        const { filename, date, time, latitude, longitude, duration, alias, ip, iptype, devicebrand, devicename, devicetype, searchname, searchtype, searchversion, ostype, osname } = req.body;
         const filepath = `${req.file.path}`;
-        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, duration, filetype: 'audio recording' });
+        const data = {
+            alias: alias,
+            filename: filename,
+            filepath: filepath,
+            filetype: 'audio recording',
+            date: date,
+            time: time,
+            latitude: latitude,
+            longitude: longitude,
+            duration: duration,
+            user: {
+                ip: ip,
+                iptype: iptype,
+                name: searchname,
+                type: searchtype,
+                version: searchversion,
+                os: {
+                    name: osname,
+                    type: ostype
+                },
+                device: {
+                    brand: devicebrand,
+                    name: devicename,
+                    type: devicetype
+                }
+            }
+        }
+        console.log(data);
+        let file = await fileModal.create(data);
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });
@@ -76,9 +146,37 @@ router.post('/audio', upload.single('audio'), async (req, res) => {
 
 router.post('/videowith', upload.single('videowith'), async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, duration, altitude, alias } = req.body;
+        const { filename, date, time, latitude, longitude, duration, alias, ip, iptype, devicebrand, devicename, devicetype, searchname, searchtype, searchversion, ostype, osname } = req.body;
         const filepath = `${req.file.path}`;
-        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, duration, filetype: 'video with audio recording' });
+        const data = {
+            alias: alias,
+            filename: filename,
+            filepath: filepath,
+            filetype: 'video with audio recording',
+            date: date,
+            time: time,
+            latitude: latitude,
+            longitude: longitude,
+            duration: duration,
+            user: {
+                ip: ip,
+                iptype: iptype,
+                name: searchname,
+                type: searchtype,
+                version: searchversion,
+                os: {
+                    name: osname,
+                    type: ostype
+                },
+                device: {
+                    brand: devicebrand,
+                    name: devicename,
+                    type: devicetype
+                }
+            }
+        }
+        console.log(data);
+        let file = await fileModal.create(data);
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });
@@ -87,9 +185,37 @@ router.post('/videowith', upload.single('videowith'), async (req, res) => {
 
 router.post('/videowithout', upload.single('videowithout'), async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, duration, altitude, alias } = req.body;
+        const { filename, date, time, latitude, longitude, duration, alias, ip, iptype, devicebrand, devicename, devicetype, searchname, searchtype, searchversion, ostype, osname } = req.body;
         const filepath = `${req.file.path}`;
-        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, duration, filetype: 'video without audio recording' });
+        const data = {
+            alias: alias,
+            filename: filename,
+            filepath: filepath,
+            filetype: 'video without audio recording',
+            date: date,
+            time: time,
+            latitude: latitude,
+            longitude: longitude,
+            duration: duration,
+            user: {
+                ip: ip,
+                iptype: iptype,
+                name: searchname,
+                type: searchtype,
+                version: searchversion,
+                os: {
+                    name: osname,
+                    type: ostype
+                },
+                device: {
+                    brand: devicebrand,
+                    name: devicename,
+                    type: devicetype
+                }
+            }
+        }
+        console.log(data);
+        let file = await fileModal.create(data);
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });
@@ -98,9 +224,37 @@ router.post('/videowithout', upload.single('videowithout'), async (req, res) => 
 
 router.post('/screenwithout', upload.single('screenwithout'), async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, duration, altitude, alias } = req.body;
+        const { filename, date, time, latitude, longitude, duration, alias, ip, iptype, devicebrand, devicename, devicetype, searchname, searchtype, searchversion, ostype, osname } = req.body;
         const filepath = `${req.file.path}`;
-        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, duration, filetype: 'screen without audio recording' });
+        const data = {
+            alias: alias,
+            filename: filename,
+            filepath: filepath,
+            filetype: 'screen without audio recording',
+            date: date,
+            time: time,
+            latitude: latitude,
+            longitude: longitude,
+            duration: duration,
+            user: {
+                ip: ip,
+                iptype: iptype,
+                name: searchname,
+                type: searchtype,
+                version: searchversion,
+                os: {
+                    name: osname,
+                    type: ostype
+                },
+                device: {
+                    brand: devicebrand,
+                    name: devicename,
+                    type: devicetype
+                }
+            }
+        }
+        console.log(data);
+        let file = await fileModal.create(data);
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });
@@ -109,9 +263,37 @@ router.post('/screenwithout', upload.single('screenwithout'), async (req, res) =
 
 router.post('/screenwith', upload.single('screenwith'), async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, duration, altitude, alias } = req.body;
+        const { filename, date, time, latitude, longitude, duration, alias, ip, iptype, devicebrand, devicename, devicetype, searchname, searchtype, searchversion, ostype, osname } = req.body;
         const filepath = `${req.file.path}`;
-        let file = await fileModal.create({ alias, filename, filepath, date, time, latitude, longitude, altitude, duration, filetype: 'screen with audio recording' });
+        const data = {
+            alias: alias,
+            filename: filename,
+            filepath: filepath,
+            filetype: 'screen with audio recording',
+            date: date,
+            time: time,
+            latitude: latitude,
+            longitude: longitude,
+            duration: duration,
+            user: {
+                ip: ip,
+                iptype: iptype,
+                name: searchname,
+                type: searchtype,
+                version: searchversion,
+                os: {
+                    name: osname,
+                    type: ostype
+                },
+                device: {
+                    brand: devicebrand,
+                    name: devicename,
+                    type: devicetype
+                }
+            }
+        }
+        console.log(data);
+        let file = await fileModal.create(data);
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });
@@ -120,8 +302,33 @@ router.post('/screenwith', upload.single('screenwith'), async (req, res) => {
 
 router.post('/geo-snap', async (req, res) => {
     try {
-        const { filename, date, time, latitude, longitude, altitude, alias } = req.body;
-        let file = await fileModal.create({ alias, filename, date, time, latitude, longitude, altitude, filetype: 'geo-snap' });
+        const { filename, date, time, latitude, longitude, altitude, alias, ip, iptype, devicebrand, devicename, devicetype, searchname, searchtype, searchversion, ostype, osname } = req.body;
+        const data = {
+            alias: alias,
+            filename: filename,
+            filetype: 'geo-snap',
+            date: date,
+            time: time,
+            latitude: latitude,
+            longitude: longitude,
+            user: {
+                ip: ip,
+                iptype: iptype,
+                name: searchname,
+                type: searchtype,
+                version: searchversion,
+                os: {
+                    name: osname,
+                    type: ostype
+                },
+                device: {
+                    brand: devicebrand,
+                    name: devicename,
+                    type: devicetype
+                }
+            }
+        }
+        let file = await fileModal.create(data);
         res.send({ message: "File Saved", file });
     } catch (err) {
         res.send({ message: "Internal Server Error" });

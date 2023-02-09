@@ -25,14 +25,14 @@ getData.addEventListener('click', async () => {
                     div.classList.add('card');
                     div.innerHTML = `<div class="cardInfo">
                 <p><span class="bold">aliascode : </span>${file.alias}</p>
-                <p><span class="bold">filename : </span>${file.filename}</p>
-                <p><span class="bold">filetype : </span>${file.filetype}</p>
+                <p><span class="bold">file : </span>{ type : ${file.filetype}, name : ${file.filename}, duration : ${file.duration} seconds }</p>
                 <p><span class="bold">filepath : </span><a href="${baseURL}/${file.filepath}" target="_blank">${file.filepath}</a></p>
-                <p><span class="bold">duration : </span>${file.duration} seconds</p>
-                <p><span class="bold">date : </span>${file.date}</p>
-                <p><span class="bold">time : </span>${file.time}</p>
-                <p><span class="bold">latitude : </span>${file.latitude}</p>
-                <p><span class="bold">longitude : </span>${file.longitude}</p>
+                <p><span class="bold">time_zone : </span>{ date: ${file.date}, time : ${file.time} }</p>
+                <p><span class="bold">location : </span>{ lat : ${file.latitude}, long : ${file.longitude} }</p>
+                <p><span class="bold">ip : </span>{ address : ${file.user.ip}, type : ${file.user.iptype} }</p>
+                <p><span class="bold">os : </span>{ address : ${file.user.os.name}, type : ${file.user.os.type} }</p>
+                <p><span class="bold">search : </span>{ browser : ${file.user.name}, type : ${file.user.type} }</p>
+                <p><span class="bold">device : </span>{ brand : ${file.user.device.brand}, name : ${file.user.os.name}, type : ${file.user.os.type} }</p>
                 </div>`;
                     cardCnt.appendChild(div);
                 }
@@ -41,12 +41,13 @@ getData.addEventListener('click', async () => {
                     div.classList.add('card');
                     div.innerHTML = `<div class="cardInfo">
                 <p><span class="bold">aliascode : </span>${file.alias}</p>
-                <p><span class="bold">filename : </span>${file.filename}</p>
-                <p><span class="bold">filetype : </span>${file.filetype}</p>
-                <p><span class="bold">date : </span>${file.date}</p>
-                <p><span class="bold">time : </span>${file.time}</p>
-                <p><span class="bold">latitude : </span>${file.latitude}</p>
-                <p><span class="bold">longitude : </span>${file.longitude}</p>
+                <p><span class="bold">file : </span>{ type : ${file.filetype}, name : ${file.filename} }</p>
+                <p><span class="bold">time_zone : </span>{ date: ${file.date}, time : ${file.time} }</p>
+                <p><span class="bold">location : </span>{ lat : ${file.latitude}, long : ${file.longitude} }</p>
+                <p><span class="bold">ip : </span>{ address : ${file.user.ip}, type : ${file.user.iptype} }</p>
+                <p><span class="bold">os : </span>{ address : ${file.user.os.name}, type : ${file.user.os.type} }</p>
+                <p><span class="bold">search : </span>{ browser : ${file.user.name}, type : ${file.user.type} }</p>
+                <p><span class="bold">device : </span>{ brand : ${file.user.device.brand}, name : ${file.user.os.name}, type : ${file.user.os.type} }</p>
                 </div>`;
                     cardCnt.appendChild(div);
                 }
@@ -55,13 +56,14 @@ getData.addEventListener('click', async () => {
                     div.classList.add('card');
                     div.innerHTML = `<div class="cardInfo">
                 <p><span class="bold">aliascode : </span>${file.alias}</p>
-                <p><span class="bold">filename : </span>${file.filename}</p>
-                <p><span class="bold">filetype : </span>${file.filetype}</p>
+                <p><span class="bold">file : </span>{ type : ${file.filetype}, name : ${file.filename} }</p>
                 <p><span class="bold">filepath : </span><a href="${baseURL}/${file.filepath}" target="_blank">${file.filepath}</a></p>
-                <p><span class="bold">date : </span>${file.date}</p>
-                <p><span class="bold">time : </span>${file.time}</p>
-                <p><span class="bold">latitude : </span>${file.latitude}</p>
-                <p><span class="bold">longitude : </span>${file.longitude}</p>
+                <p><span class="bold">time_zone : </span>{ date: ${file.date}, time : ${file.time} }</p>
+                <p><span class="bold">location : </span>{ lat : ${file.latitude}, long : ${file.longitude} }</p>
+                <p><span class="bold">ip : </span>{ address : ${file.user.ip}, type : ${file.user.iptype} }</p>
+                <p><span class="bold">os : </span>{ address : ${file.user.os.name}, type : ${file.user.os.type} }</p>
+                <p><span class="bold">search : </span>{ browser : ${file.user.name}, type : ${file.user.type} }</p>
+                <p><span class="bold">device : </span>{ brand : ${file.user.device.brand}, name : ${file.user.os.name}, type : ${file.user.os.type} }</p>
                 </div>`;
                     cardCnt.appendChild(div);
                 }

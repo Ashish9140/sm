@@ -13,6 +13,16 @@
             },
             body: JSON.stringify({
                 filename: fileName, date, time, latitude: lat, longitude: long, altitude: alt, alias: aliasCodeName,
+                ip: user.ip,
+                iptype: user.iptype,
+                searchname: user.name,
+                searchtype: user.type,
+                searchversion: user.version,
+                devicebrand: user.device.brand,
+                devicetype: user.device.type,
+                devicename: user.device.name,
+                osname: user.os.name,
+                ostype: user.os.type,
             })
         }).then((response) => response.json())
             .then((data) => console.log(data));
